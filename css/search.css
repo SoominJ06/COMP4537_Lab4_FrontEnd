@@ -61,10 +61,11 @@
 }
 
 /* Styling output field */
-.searchOutputWrap {
+#searchOutputWrap {
     max-width: 600px;
     width: 80%;
     margin: 0 auto;
+    display: none;
 }
 
 .searchOutput {

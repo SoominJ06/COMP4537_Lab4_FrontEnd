@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
+    <div class="wrap">
+        <div class="searchInputWrap">
+            <div id="prompt">Search for a word</div>
+            <form action="" method="get" id="searchForm">
+                <input type="text" id="searchInput" placeholder="Enter a word" />
+                <button type="submit" id="searchBtn">Search</button>
+            </form>
+        </div>
+
+        <div class="searchOutputWrap">
+            <div class="searchOutput">
+                <div id="fetchedWord"></div>
+                <div id="fetchedDesc"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -3,21 +3,15 @@ class APIController {
         this.xhttp = new XMLHttpRequest();
     }
 
-    reqStoreWord(word, desc) {
+    storeWord(word, desc) {
         this.xhttp.open("POST", "placeholderLink", true);
         this.xhttp.send("word=" + word + "?desc=" + desc);
         this.xhttp.onload = function() {
             // Insert response onto store.html
         }
     }
-
-    storeWord() {
-        const word = document.getElementById("wordInput").value;
-        const desc = document.getElementById("descriptionInput").value;
-        this.reqStoreWord(word, desc);
-    }
-
-    reqSearchWord(word) {
+    
+    searchWord(word) {
         this.xhttp.open("GET", "placeholderLink" + word, true);
         this.xhttp.send();
         
@@ -28,11 +22,6 @@ class APIController {
                 // Grab description, insert into document.getElementById("fetchedDesc")
             }
         };
-    }
-    
-    searchWord() {
-        const word = document.getElementById("searchInput").value;
-        this.reqSearchWord(word);
     }
 }
 
@@ -57,21 +46,33 @@ class UI {
         document.getElementById("prompt").innerHTML = messages.storePrompt;
         document.getElementById("wordInputLabel").innerHTML = messages.storeWordInput;
         document.getElementById("descriptionInputLabel").innerHTML = messages.storeDescInput;
+        this.initStoreBtn();
+    }
+
+    initStoreBtn() {
         document.getElementById("submitBtn").innerHTML = messages.submitBtn;
         document.getElementById("submitBtn").addEventListener("click", (e) => {
             e.preventDefault();
-            this.xhr.storeWord();
+            const word = document.getElementById("wordInput").value;
+            const desc = document.getElementById("descriptionInput").value;
+            this.xhr.storeWord(word, desc);
         });
     }
 
+    // Button initializations 
     initSearch() {
         document.getElementById("prompt").innerHTML = messages.searchPrompt;
         document.getElementById("searchInput").placeholder = messages.searchInput;
+        this.initSearchBtn();
+    }
+
+    initSearchBtn() {
         document.getElementById("searchBtn").innerHTML = messages.searchBtn;
-        document.getElementById("searchBtn").addEventListener("click", (e) => {
+        document.getElementById("searchBtn").addEventListener("click", (e) => {            
             e.preventDefault();
-            this.xhr.searchWord();
-        })
+            const word = document.getElementById("searchInput").value;
+            this.xhr.searchWord(word);
+        });
     }
 }
 

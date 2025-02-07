@@ -49,6 +49,13 @@ class UI {
         this.initStoreBtn();
     }
 
+    initSearch() {
+        document.getElementById("prompt").innerHTML = messages.searchPrompt;
+        document.getElementById("searchInput").placeholder = messages.searchInput;
+        this.initSearchBtn();
+    }
+
+    // Button initializations
     initStoreBtn() {
         document.getElementById("submitBtn").innerHTML = messages.submitBtn;
         document.getElementById("submitBtn").addEventListener("click", (e) => {
@@ -57,13 +64,6 @@ class UI {
             const desc = document.getElementById("descriptionInput").value;
             this.xhr.storeWord(word, desc);
         });
-    }
-
-    // Button initializations 
-    initSearch() {
-        document.getElementById("prompt").innerHTML = messages.searchPrompt;
-        document.getElementById("searchInput").placeholder = messages.searchInput;
-        this.initSearchBtn();
     }
 
     initSearchBtn() {

@@ -3,6 +3,7 @@ const messages = {
     storeWordInput: "Word",
     storeDescInput: "Description",
     submitBtn: "Submit",
+    storePopupCloseBtn: "Ok",
 
     searchPrompt: "Search for a Word",
     searchInput: "Enter a word",

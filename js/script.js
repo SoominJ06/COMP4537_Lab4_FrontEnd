@@ -7,7 +7,11 @@ class APIController {
         this.xhttp.open("POST", "placeholderLink", true);
         this.xhttp.send("word=" + word + "?desc=" + desc);
         this.xhttp.onload = function() {
-            // Insert response onto store.html
+            document.getElementById("storeOutputWrap").style.visibility = "visible";
+            document.getElementById("storeOutputWrap").style.opacity = "1";
+
+            // Insert response onto document.getElementById("storeOutputMsg")
+            document.getElementById("storeOutputMsg").innerHTML = "Example Output Message"
         }
     }
     
@@ -47,6 +51,7 @@ class UI {
         document.getElementById("wordInputLabel").innerHTML = messages.storeWordInput;
         document.getElementById("descriptionInputLabel").innerHTML = messages.storeDescInput;
         this.initStoreBtn();
+        this.initStorePopupCloseBtn();
     }
 
     initSearch() {
@@ -64,6 +69,15 @@ class UI {
             const desc = document.getElementById("descriptionInput").value;
             this.xhr.storeWord(word, desc);
         });
+    }
+
+    initStorePopupCloseBtn() {
+        document.getElementById("closeStoreOutput").innerHTML = messages.storePopupCloseBtn;
+        document.getElementById("closeStoreOutput").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("storeOutputWrap").style.opacity = "0";
+            document.getElementById("storeOutputWrap").style.visibility = "hidden";
+        })
     }
 
     initSearchBtn() {

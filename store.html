@@ -10,18 +10,21 @@
 <body>
 
     <div class="wrap">
-        <div id="prompt">Store a new word</div>
+        <div id="prompt"></div>
         <div class="storeInputWrap">
             <form action="" method="post" id="storeForm">
-                <label for="wordInput">Word</label>
+                <label for="wordInput" id="wordInputLabel"></label>
                 <input type="text" id="wordInput"/>
-                <label for="descriptionInput">Description</label>
+
+                <label for="descriptionInput" id="descriptionInputLabel"></label>
                 <textarea name="" id="descriptionInput" class="descriptionInput"></textarea>
-                <button type="submit" id="submitBtn">Submit</button>
+                
+                <button type="submit" id="submitBtn"></button>
             </form>
         </div>
     </div>
     
     <script src="js/script.js"></script>
+    <script src="lang/messages/en/user.js"></script>
 </body>
 </html>

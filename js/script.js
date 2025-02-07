@@ -4,24 +4,23 @@ class APIController {
     }
 
     storeWord(word, desc) {
-        this.xhttp.open("POST", "placeholderLink", true);
-        this.xhttp.send("word=" + word + "?desc=" + desc);
+        this.xhttp.open("POST", "http://localhost:3001/api/definitions", true);
+        this.xhttp.send("?word=" + word + "?desc=" + desc);
         this.xhttp.onload = function() {
             document.getElementById("storeOutputWrap").style.visibility = "visible";
             document.getElementById("storeOutputWrap").style.opacity = "1";
-
             // Insert response onto document.getElementById("storeOutputMsg")
             document.getElementById("storeOutputMsg").innerHTML = "Example Output Message"
         }
     }
     
     searchWord(word) {
-        this.xhttp.open("GET", "placeholderLink" + word, true);
+        this.xhttp.open("GET", "http://localhost:3001/api/definitions/?word=" + word, true);
         this.xhttp.send();
-        
         this.xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("searchOutputWrap").style.display = "block";
+                
                 // Grab word, insert into document.getElementById("fetchedWord")
                 // Grab description, insert into document.getElementById("fetchedDesc")
             }

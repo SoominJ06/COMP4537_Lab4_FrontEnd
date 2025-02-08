@@ -36,10 +36,14 @@ body {
 }
 
 footer a {
+    max-width: 200px;
+    width: 85%;
     padding: 10px 25px;
     background-color: #62c29a;
     border-radius: 5px;
     color: #1e1e22;
+    font-size: 13px;
+    text-align: center;
     text-decoration: none;
     position: absolute;
     bottom: 20px;

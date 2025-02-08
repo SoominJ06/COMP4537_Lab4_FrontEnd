@@ -13,6 +13,8 @@ const messages = {
     inputHasNumbers: "Please remove any numbers from the input field",
     numOfReqs: "Request number %1",
     lastUpdated: "Updated on: %1",
+    goToSearch: "To search for a word →",
+    goToStore: "To store a new word →",
     
     searchPrompt: "Search for a Word",
     searchInput: "Enter a word",

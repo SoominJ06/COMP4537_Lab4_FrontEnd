@@ -125,12 +125,14 @@ class UI {
         document.getElementById("prompt").innerHTML = messages.storePrompt;
         document.getElementById("wordInputLabel").innerHTML = messages.storeWordInput;
         document.getElementById("descriptionInputLabel").innerHTML = messages.storeDescInput;
+        document.getElementById("goToSearch").innerHTML = messages.goToSearch;
         this.initStoreBtn();
     }
 
     initSearch() {
         document.getElementById("prompt").innerHTML = messages.searchPrompt;
         document.getElementById("searchInput").placeholder = messages.searchInput;
+        document.getElementById("goToStore").innerHTML = messages.goToStore;
         this.initSearchBtn();
     }
 

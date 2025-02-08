@@ -1,36 +1,105 @@
 class APIController {
     constructor() {
         this.xhttp = new XMLHttpRequest();
+        this.outputController = new OutputController();
     }
 
     storeWord(word, desc) {
         this.xhttp.open("POST", "http://localhost:3001/api/definitions", true);
         this.xhttp.send("?word=" + word + "?desc=" + desc);
-        this.xhttp.onload = function() {
-            document.getElementById("storeOutputWrap").style.visibility = "visible";
-            document.getElementById("storeOutputWrap").style.opacity = "1";
-            // Insert response onto document.getElementById("storeOutputMsg")
-            document.getElementById("storeOutputMsg").innerHTML = "Example Output Message"
-        }
+        this.xhttp.onload = () => {  // Use arrow function
+            if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
+                this.outputController.displayStorePopup("Example Output Message");
+            }
+        };
     }
     
     searchWord(word) {
         this.xhttp.open("GET", "http://localhost:3001/api/definitions/?word=" + word, true);
         this.xhttp.send();
-        this.xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("searchOutputWrap").style.display = "block";
-                
-                // Grab word, insert into document.getElementById("fetchedWord")
-                // Grab description, insert into document.getElementById("fetchedDesc")
+        this.xhttp.onreadystatechange = () => {
+            if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
+                // this.outputController.displaySearchedWord(fetchedWord, fetchedDesc);
             }
         };
+    }
+}
+
+class InputValidator {
+
+    checkForNull(value) {
+        if (value == "" || value == null || value.trim() == "" || value.trim() == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    checkForNumbers(value) {
+        const regex = /^[A-Za-z-]+$/;
+        if (value.match(regex)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    validateInput(value) {
+        if (this.checkForNull(value)) {
+            return messages.inputIsEmpty;
+        } else if (this.checkForNumbers(value)) {
+            return messages.inputHasNumbers;
+        } else {
+            return true;
+        }
+    }
+
+}
+
+class OutputController {
+    hideErrorPopup() {
+        document.getElementById("errorPopupWrap").style.opacity = "0";
+        document.getElementById("errorPopupWrap").style.visibility = "hidden";
+    }
+
+    displayErrorPopup(errorMsg, errorCode) {
+        document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
+        document.getElementById("errorMsg").innerHTML = errorCode? errorCode : messages.error;
+        document.getElementById("errorDesc").innerHTML = errorMsg
+        document.getElementById("errorPopupWrap").style.opacity = "1";
+        document.getElementById("errorPopupWrap").style.visibility = "visible";
+        document.getElementById("closeErrorPopupBtn").addEventListener("click", () => {
+            this.hideErrorPopup();
+        })
+    }
+
+    hideStorePopup() {
+        document.getElementById("storeOutputWrap").style.opacity = "0";
+        document.getElementById("storeOutputWrap").style.visibility = "hidden";
+    }
+
+    displayStorePopup(msg) {
+        document.getElementById("closeStoreOutput").innerHTML = messages.ok;
+        document.getElementById("storeOutputMsg").innerHTML = msg;
+        document.getElementById("storeOutputWrap").style.opacity = "1";
+        document.getElementById("storeOutputWrap").style.visibility = "visible";
+        document.getElementById("closeStoreOutput").addEventListener("click", () => {
+            this.hideStorePopup();
+        });
+    }
+
+    displaySearchedWord(word, desc) {
+        document.getElementById("searchOutputWrap").style.display = "block";
+        document.getElementById("fetchedWord").innerText = word;
+        document.getElementById("fetchedDesc").innerText = desc;
     }
 }
 
 class UI {
     constructor(currLocation) {
         this.xhr = new APIController();
+        this.inputValidator = new InputValidator();
+        this.outputController = new OutputController();
         this.init(currLocation);
     }
 
@@ -50,7 +119,6 @@ class UI {
         document.getElementById("wordInputLabel").innerHTML = messages.storeWordInput;
         document.getElementById("descriptionInputLabel").innerHTML = messages.storeDescInput;
         this.initStoreBtn();
-        this.initStorePopupCloseBtn();
     }
 
     initSearch() {
@@ -66,17 +134,17 @@ class UI {
             e.preventDefault();
             const word = document.getElementById("wordInput").value;
             const desc = document.getElementById("descriptionInput").value;
+            const validatedWord = this.inputValidator.validateInput(word);
+            const validatedDesc = this.inputValidator.validateInput(desc);
+            if (validatedWord != true) {
+                this.outputController.displayErrorPopup(validatedWord);
+                return;
+            } else if (validatedDesc != true) {
+                this.outputController.displayErrorPopup(validatedDesc);
+                return;
+            }
             this.xhr.storeWord(word, desc);
         });
-    }
-
-    initStorePopupCloseBtn() {
-        document.getElementById("closeStoreOutput").innerHTML = messages.storePopupCloseBtn;
-        document.getElementById("closeStoreOutput").addEventListener("click", (e) => {
-            e.preventDefault();
-            document.getElementById("storeOutputWrap").style.opacity = "0";
-            document.getElementById("storeOutputWrap").style.visibility = "hidden";
-        })
     }
 
     initSearchBtn() {
@@ -84,6 +152,11 @@ class UI {
         document.getElementById("searchBtn").addEventListener("click", (e) => {            
             e.preventDefault();
             const word = document.getElementById("searchInput").value;
+            const validatedWord = this.inputValidator.validateInput(word)
+            if (validatedWord != true) {
+                this.outputController.displayErrorPopup(validatedWord);
+                return;
+            }
             this.xhr.searchWord(word);
         });
     }

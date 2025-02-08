@@ -105,9 +105,10 @@ textarea {
     justify-content: center;
     align-items: center;
     position: absolute;
+    
+    /* Hide popup when page is first initialized */
     visibility: hidden;
-
-    opacity: 0; /* Hide popup when page is first initialized */
+    opacity: 0; 
     /* Controlling the transition properties */
     -webkit-transition: opacity 0.4s;
     -moz-transition: opacity 0.4s;

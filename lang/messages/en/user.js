@@ -5,6 +5,7 @@ const messages = {
     submitBtn: "Submit",
     newEntry: "New entry recorded!",
     storedWord: "\"%1: %2\"",
+    numOfStoredWords: "Total number of stored words: %1",
     
     ok: "Ok",
     error: "Error!",

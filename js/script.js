@@ -14,7 +14,7 @@ class APIController {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (response.status === "success" && this.xhttp.status === 201) {
-                    this.outputController.displayStorePopup(response.data.request_number, response.data.updated_on, newWord, desc);
+                    this.outputController.displayStorePopup(response.data.request_number, response.data.updated_on, newWord, desc, response.data.num_words);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status, response.data.request_number);
                 }
@@ -45,7 +45,7 @@ class InputValidator {
     }
 
     containsNumbers(value) {
-        return !/^[A-Za-z- ]+$/.test(value);
+        return !/^[A-Za-z-' ]+$/.test(value);
     }
 
     validateInput(value) {
@@ -82,12 +82,13 @@ class OutputController {
         document.getElementById("storeOutputWrap").style.visibility = "hidden";
     }
 
-    displayStorePopup(reqNum, updatedTime, storedWord, storedDesc) {
+    displayStorePopup(reqNum, updatedTime, storedWord, storedDesc, numOfWords) {
         document.getElementById("closeStoreOutput").innerHTML = messages.ok;
         document.getElementById("numOfReqs").innerHTML = messages.numOfReqs.replace("%1", reqNum);
         document.getElementById("lastUpdated").innerHTML = messages.lastUpdated.replace("%1", updatedTime);
         document.getElementById("storeSuccessful").innerHTML = messages.newEntry;
         document.getElementById("storedWord").innerHTML = messages.storedWord.replace("%1", storedWord).replace("%2", storedDesc);
+        document.getElementById("numOfStoredWords").innerHTML = messages.numOfStoredWords.replace("%1", numOfWords);
         document.getElementById("storeOutputWrap").style.opacity = "1";
         document.getElementById("storeOutputWrap").style.visibility = "visible";
         document.getElementById("closeStoreOutput").addEventListener("click", () => {

@@ -8,9 +8,14 @@ class APIController {
     storeWord(word, desc) {
         this.xhttp.open("POST", this.baseUrl, true);
         this.xhttp.send("?word=" + word + "?desc=" + desc);
-        this.xhttp.onload = () => {  // Use arrow function
-            if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
-                this.outputController.displayStorePopup(100, "Feb 7", word, desc);
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState == 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (response.status === "success" && this.xhttp.status == 201) {
+                    this.outputController.displayStorePopup(response.data.request_number, response.data.updated_on, word, desc);
+                } else {
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status, response.data.requestNumber);
+                }
             }
         };
     }
@@ -19,8 +24,13 @@ class APIController {
         this.xhttp.open("GET", this.baseUrl + "/?word=" + word, true);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
-            if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
-                // this.outputController.displaySearchedWord(100, fetchedWord, fetchedDesc);
+            if (this.xhttp.readyState == 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (response.status === "success" && this.xhttp.status == 200) {
+                    this.outputController.displaySearchedWord(response.data.request_number, response.data.word, response.data.definition);
+                } else {
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status, response.data.requestNumber);
+                }
             }
         };
     }
@@ -28,15 +38,15 @@ class APIController {
 
 class InputValidator {
 
-    static isEmpty(value) {
+    isEmpty(value) {
         return !value || value.trim() === "";
     }
 
-    static containsNumbers(value) {
+    containsNumbers(value) {
         return !/^[A-Za-z-]+$/.test(value);
     }
 
-    static validateInput(value) {
+    validateInput(value) {
         if (this.isEmpty(value)) return messages.inputIsEmpty;
         if (this.containsNumbers(value)) return messages.inputHasNumbers;
         return true;
@@ -45,6 +55,8 @@ class InputValidator {
 }
 
 class OutputController {
+
+    // Error popup
     hideErrorPopup() {
         document.getElementById("errorPopupWrap").style.opacity = "0";
         document.getElementById("errorPopupWrap").style.visibility = "hidden";
@@ -62,6 +74,7 @@ class OutputController {
         })
     }
 
+    // Status update popup of store
     hideStorePopup() {
         document.getElementById("storeOutputWrap").style.opacity = "0";
         document.getElementById("storeOutputWrap").style.visibility = "hidden";
@@ -80,6 +93,7 @@ class OutputController {
         });
     }
 
+    // Displaying searched word
     displaySearchedWord(reqNum, word, desc) {
         document.getElementById("searchOutputWrap").style.display = "block";
         document.getElementById("numOfReqs").innerHTML = messages.numOfReqs.replace("%1", reqNum);

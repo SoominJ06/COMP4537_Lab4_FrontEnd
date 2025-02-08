@@ -15,13 +15,25 @@ class APIController {
     }
     
     searchWord(word) {
-        this.xhttp.open("GET", "http://localhost:3001/api/definitions/?word=" + word, true);
+        this.xhttp.open("GET", "https://api.dictionaryapi.dev/api/v2/entries/en/" + word, true);
         this.xhttp.send();
-        this.xhttp.onreadystatechange = () => {
+        this.xhttp.onreadystatechange = () => {  // Use arrow function
             if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
-                // this.outputController.displaySearchedWord(fetchedWord, fetchedDesc);
+                let response = JSON.parse(this.xhttp.responseText);
+                let wordFetched = response[0].word;  
+                let definition = response[0].meanings[0].definitions[0].definition;  
+                
+                this.outputController.displaySearchedWord(100, wordFetched, definition);
             }
         };
+
+        // this.xhttp.open("GET", "http://localhost:3001/api/definitions/?word=" + word, true);
+        // this.xhttp.send();
+        // this.xhttp.onreadystatechange = () => {
+        //     if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
+        //         // this.outputController.displaySearchedWord(fetchedWord, fetchedDesc);
+        //     }
+        // };
     }
 }
 
@@ -91,8 +103,9 @@ class OutputController {
         });
     }
 
-    displaySearchedWord(word, desc) {
+    displaySearchedWord(reqNum, word, desc) {
         document.getElementById("searchOutputWrap").style.display = "block";
+        document.getElementById("numOfReqs").innerHTML = messages.numOfReqs.replace("%1", reqNum);
         document.getElementById("fetchedWord").innerText = word;
         document.getElementById("fetchedDesc").innerText = desc;
     }

@@ -68,6 +68,11 @@
     display: none;
 }
 
+#numOfReqs {
+    color: #e9e9e9;
+    margin-bottom: 15px;
+}
+
 .searchOutput {
     width: 100%;
     background-color: #e9e9e9;

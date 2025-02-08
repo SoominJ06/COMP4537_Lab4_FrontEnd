@@ -2,10 +2,11 @@ class APIController {
     constructor() {
         this.xhttp = new XMLHttpRequest();
         this.outputController = new OutputController();
+        this.baseUrl = "http://localhost:3001/api/definitions";
     }
 
     storeWord(word, desc) {
-        this.xhttp.open("POST", "http://localhost:3001/api/definitions", true);
+        this.xhttp.open("POST", this.baseUrl, true);
         this.xhttp.send("?word=" + word + "?desc=" + desc);
         this.xhttp.onload = () => {  // Use arrow function
             if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
@@ -15,7 +16,7 @@ class APIController {
     }
     
     searchWord(word) {
-        this.xhttp.open("GET", "http://localhost:3001/api/definitions/?word=" + word, true);
+        this.xhttp.open("GET", this.baseUrl + "/?word=" + word, true);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
             if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
@@ -27,31 +28,18 @@ class APIController {
 
 class InputValidator {
 
-    checkForNull(value) {
-        if (value == "" || value == null || value.trim() == "" || value.trim() == null) {
-            return true;
-        } else {
-            return false;
-        }
+    static isEmpty(value) {
+        return !value || value.trim() === "";
     }
 
-    checkForNumbers(value) {
-        const regex = /^[A-Za-z-]+$/;
-        if (value.match(regex)) {
-            return false;
-        } else {
-            return true;
-        }
+    static containsNumbers(value) {
+        return !/^[A-Za-z-]+$/.test(value);
     }
 
-    validateInput(value) {
-        if (this.checkForNull(value)) {
-            return messages.inputIsEmpty;
-        } else if (this.checkForNumbers(value)) {
-            return messages.inputHasNumbers;
-        } else {
-            return true;
-        }
+    static validateInput(value) {
+        if (this.isEmpty(value)) return messages.inputIsEmpty;
+        if (this.containsNumbers(value)) return messages.inputHasNumbers;
+        return true;
     }
 
 }
@@ -65,7 +53,7 @@ class OutputController {
     displayErrorPopup(errorMsg, errorCode, reqNum) {
         document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
         document.getElementById("numOfReqs").innerHTML = reqNum ? messages.numOfReqs.replace("%1", reqNum) : "";
-        document.getElementById("errorMsg").innerHTML = errorCode? errorCode : messages.error;
+        document.getElementById("errorMsg").textContent = errorCode || messages.error;
         document.getElementById("errorDesc").innerHTML = errorMsg
         document.getElementById("errorPopupWrap").style.opacity = "1";
         document.getElementById("errorPopupWrap").style.visibility = "visible";

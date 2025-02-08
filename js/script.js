@@ -5,16 +5,18 @@ class APIController {
         this.baseUrl = "http://localhost:3001/api/definitions";
     }
 
-    storeWord(word, desc) {
+    storeWord(newWord, desc) {
         this.xhttp.open("POST", this.baseUrl, true);
-        this.xhttp.send("?word=" + word + "?desc=" + desc);
+        this.xhttp.setRequestHeader("Content-Type", "application/json");
+        const requestData = JSON.stringify({ word: newWord, definition: desc });
+        this.xhttp.send(requestData);   
         this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState == 4) {
+            if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                if (response.status === "success" && this.xhttp.status == 201) {
-                    this.outputController.displayStorePopup(response.data.request_number, response.data.updated_on, word, desc);
+                if (response.status === "success" && this.xhttp.status === 201) {
+                    this.outputController.displayStorePopup(response.data.request_number, response.data.updated_on, newWord, desc);
                 } else {
-                    this.outputController.displayErrorPopup(response.message, this.xhttp.status, response.data.requestNumber);
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status, response.data.request_number);
                 }
             }
         };
@@ -24,12 +26,12 @@ class APIController {
         this.xhttp.open("GET", this.baseUrl + "/?word=" + word, true);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
-            if (this.xhttp.readyState == 4) {
+            if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                if (response.status === "success" && this.xhttp.status == 200) {
+                if (response.status === "success" && this.xhttp.status === 200) {
                     this.outputController.displaySearchedWord(response.data.request_number, response.data.word, response.data.definition);
                 } else {
-                    this.outputController.displayErrorPopup(response.message, this.xhttp.status, response.data.requestNumber);
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status, response.data.request_number);
                 }
             }
         };
@@ -43,7 +45,7 @@ class InputValidator {
     }
 
     containsNumbers(value) {
-        return !/^[A-Za-z-]+$/.test(value);
+        return !/^[A-Za-z- ]+$/.test(value);
     }
 
     validateInput(value) {
@@ -64,7 +66,7 @@ class OutputController {
 
     displayErrorPopup(errorMsg, errorCode, reqNum) {
         document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
-        document.getElementById("numOfReqs").innerHTML = reqNum ? messages.numOfReqs.replace("%1", reqNum) : "";
+        document.getElementById("errNumOfReqs").innerHTML = reqNum ? messages.numOfReqs.replace("%1", reqNum) : "";
         document.getElementById("errorMsg").textContent = errorCode ? messages.errorCode.replace("%1", errorCode) : messages.error;
         document.getElementById("errorDesc").innerHTML = errorMsg
         document.getElementById("errorPopupWrap").style.opacity = "1";

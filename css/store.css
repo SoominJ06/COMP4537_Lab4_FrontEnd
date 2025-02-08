@@ -129,7 +129,8 @@ textarea {
     align-items: center;
 }
 
-#numOfReqs {
+#numOfReqs,
+#errNumOfReqs {
     align-self: flex-start;
 }
 

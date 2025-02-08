@@ -73,12 +73,14 @@
     display: flex;
 }
 
-#numOfReqs {
+#numOfReqs,
+#errNumOfReqs {
     font-size: 12px;
     align-self: flex-start;
 }
 
-#searchOutputWrap #numOfReqs {
+#searchOutputWrap #numOfReqs,
+#searchOutputWrap #errNumOfReqs {
     background-color: #706dd0;
     padding: 10px 20px;
     border-radius: 20px 20px 0 0;

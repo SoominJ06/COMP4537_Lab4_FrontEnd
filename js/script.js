@@ -65,7 +65,7 @@ class OutputController {
     displayErrorPopup(errorMsg, errorCode, reqNum) {
         document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
         document.getElementById("numOfReqs").innerHTML = reqNum ? messages.numOfReqs.replace("%1", reqNum) : "";
-        document.getElementById("errorMsg").textContent = errorCode || messages.error;
+        document.getElementById("errorMsg").textContent = errorCode ? messages.errorCode.replace("%1", errorCode) : messages.error;
         document.getElementById("errorDesc").innerHTML = errorMsg
         document.getElementById("errorPopupWrap").style.opacity = "1";
         document.getElementById("errorPopupWrap").style.visibility = "visible";

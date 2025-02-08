@@ -35,6 +35,24 @@ body {
     text-align: center;
 }
 
+footer a {
+    padding: 10px 25px;
+    background-color: #62c29a;
+    border-radius: 5px;
+    color: #1e1e22;
+    text-decoration: none;
+    position: absolute;
+    bottom: 20px;
+    right: 50%;
+    transform: translate(50%); 
+    transition-duration: 0.3s;
+}
+
+footer a:hover {
+    box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.4);
+    transform: translate(50%) scale(0.99); 
+}
+
 /* Styling error popup field */
 #errorPopupWrap {
     max-width: 650px;

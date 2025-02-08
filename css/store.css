@@ -125,6 +125,10 @@ textarea {
     align-items: center;
 }
 
+#numOfReqs {
+    align-self: flex-start;
+}
+
 .storeOutput {
     width: 100%;
     padding: 20px;

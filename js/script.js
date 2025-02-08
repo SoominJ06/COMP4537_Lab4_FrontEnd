@@ -5,35 +5,23 @@ class APIController {
     }
 
     storeWord(word, desc) {
-        // this.xhttp.open("POST", "http://localhost:3001/api/definitions", true);
-        // this.xhttp.send("?word=" + word + "?desc=" + desc);
-        // this.xhttp.onload = () => {  // Use arrow function
-            // if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
+        this.xhttp.open("POST", "http://localhost:3001/api/definitions", true);
+        this.xhttp.send("?word=" + word + "?desc=" + desc);
+        this.xhttp.onload = () => {  // Use arrow function
+            if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
                 this.outputController.displayStorePopup(100, "Feb 7", word, desc);
-        //     }
-        // };
+            }
+        };
     }
     
     searchWord(word) {
-        this.xhttp.open("GET", "https://api.dictionaryapi.dev/api/v2/entries/en/" + word, true);
+        this.xhttp.open("GET", "http://localhost:3001/api/definitions/?word=" + word, true);
         this.xhttp.send();
-        this.xhttp.onreadystatechange = () => {  // Use arrow function
+        this.xhttp.onreadystatechange = () => {
             if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
-                let response = JSON.parse(this.xhttp.responseText);
-                let wordFetched = response[0].word;  
-                let definition = response[0].meanings[0].definitions[0].definition;  
-                
-                this.outputController.displaySearchedWord(100, wordFetched, definition);
+                // this.outputController.displaySearchedWord(100, fetchedWord, fetchedDesc);
             }
         };
-
-        // this.xhttp.open("GET", "http://localhost:3001/api/definitions/?word=" + word, true);
-        // this.xhttp.send();
-        // this.xhttp.onreadystatechange = () => {
-        //     if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
-        //         // this.outputController.displaySearchedWord(fetchedWord, fetchedDesc);
-        //     }
-        // };
     }
 }
 
@@ -74,8 +62,9 @@ class OutputController {
         document.getElementById("errorPopupWrap").style.visibility = "hidden";
     }
 
-    displayErrorPopup(errorMsg, errorCode) {
+    displayErrorPopup(errorMsg, errorCode, reqNum) {
         document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
+        document.getElementById("numOfReqs").innerHTML = reqNum ? messages.numOfReqs.replace("%1", reqNum) : "";
         document.getElementById("errorMsg").innerHTML = errorCode? errorCode : messages.error;
         document.getElementById("errorDesc").innerHTML = errorMsg
         document.getElementById("errorPopupWrap").style.opacity = "1";

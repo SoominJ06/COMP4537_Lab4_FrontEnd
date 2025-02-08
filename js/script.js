@@ -5,13 +5,13 @@ class APIController {
     }
 
     storeWord(word, desc) {
-        this.xhttp.open("POST", "http://localhost:3001/api/definitions", true);
-        this.xhttp.send("?word=" + word + "?desc=" + desc);
-        this.xhttp.onload = () => {  // Use arrow function
-            if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
-                this.outputController.displayStorePopup("Example Output Message");
-            }
-        };
+        // this.xhttp.open("POST", "http://localhost:3001/api/definitions", true);
+        // this.xhttp.send("?word=" + word + "?desc=" + desc);
+        // this.xhttp.onload = () => {  // Use arrow function
+            // if (this.xhttp.readyState == 4 && this.xhttp.status == 200) {
+                this.outputController.displayStorePopup(100, "Feb 7", word, desc);
+        //     }
+        // };
     }
     
     searchWord(word) {
@@ -78,9 +78,12 @@ class OutputController {
         document.getElementById("storeOutputWrap").style.visibility = "hidden";
     }
 
-    displayStorePopup(msg) {
+    displayStorePopup(reqNum, updatedTime, storedWord, storedDesc) {
         document.getElementById("closeStoreOutput").innerHTML = messages.ok;
-        document.getElementById("storeOutputMsg").innerHTML = msg;
+        document.getElementById("numOfReqs").innerHTML = messages.numOfReqs.replace("%1", reqNum);
+        document.getElementById("lastUpdated").innerHTML = messages.lastUpdated.replace("%1", updatedTime);
+        document.getElementById("storeSuccessful").innerHTML = messages.newEntry;
+        document.getElementById("storedWord").innerHTML = messages.storedWord.replace("%1", storedWord).replace("%2", storedDesc);
         document.getElementById("storeOutputWrap").style.opacity = "1";
         document.getElementById("storeOutputWrap").style.visibility = "visible";
         document.getElementById("closeStoreOutput").addEventListener("click", () => {

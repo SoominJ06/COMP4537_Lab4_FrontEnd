@@ -4,7 +4,7 @@ const messages = {
     storeDescInput: "Description",
     submitBtn: "Submit",
     newEntry: "New entry recorded: ",
-    storedWord: `"%1: %2"`,
+    storedWord: "\"%1: %2\"",
     
     ok: "Ok",
     error: "Error!",

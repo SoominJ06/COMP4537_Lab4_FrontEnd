@@ -2,7 +2,7 @@ class APIController {
     constructor() {
         this.xhttp = new XMLHttpRequest();
         this.outputController = new OutputController();
-        this.baseUrl = "http://localhost:3001/api/definitions";
+        this.baseUrl = "https://stingray-app-58zyk.ondigitalocean.app/api/definitions";
     }
 
     storeWord(newWord, desc) {
